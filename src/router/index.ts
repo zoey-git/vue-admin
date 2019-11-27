@@ -5,6 +5,8 @@ Vue.use(VueRouter)
 
 import Layout from '@/views/layout/index.vue'
 import Home from '@/views/home/index.vue'
+import Menu from '@/views/menu/index.vue'
+
 const routes = [
   {
     path: '/',
@@ -15,6 +17,10 @@ const routes = [
       {
         path: '/home',
         component: Home
+      },
+      {
+        path: '/menu',
+        component: Menu
       }
     ]
   }

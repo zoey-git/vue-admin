@@ -6,7 +6,12 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/style/cssreset.css'
 
+import Dialog from '@/components/dialog.vue'
+
+Vue.component('Dialog', Dialog)
+
 Vue.config.productionTip = false
+
 
 Vue.use(ElementUI);
 
