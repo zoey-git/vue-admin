@@ -46,3 +46,21 @@ export const del = (url, params) => {
     })
 }
 
+
+export const put = (url, params) => {
+    return new Promise((resolve, reject) => {
+        axios({
+            method: 'PUT',
+            url: BASE_URL + url,
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            },
+            data: params
+        }).then(res => {
+            resolve(res.data)
+        }).catch((err) => {
+            reject(err)
+        })
+    })
+}
+

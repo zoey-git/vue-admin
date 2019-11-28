@@ -1,4 +1,4 @@
-import { get, post, del} from '@/util/request'
+import { get, post, del, put} from '@/util/request'
 
 
 export const getMenuList = (params) => {
@@ -11,4 +11,8 @@ export const addMenu = (params) => {
 
 export const delMenuList = (params) => {
     return del('/menu', params)
+}
+
+export const changeMenu = (params) => {
+    return put('/menu', params)
 }

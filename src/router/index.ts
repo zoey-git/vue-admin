@@ -16,10 +16,16 @@ const routes = [
     children: [
       {
         path: '/home',
+        meta: {
+          title: "首页"
+        },
         component: Home
       },
       {
         path: '/menu',
+        meta: {
+          title: "菜单"
+        },
         component: Menu
       }
     ]

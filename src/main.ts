@@ -5,6 +5,7 @@ import store from './store'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/style/cssreset.css'
+import '@/assets/style/base.scss'
 
 import Dialog from '@/components/dialog.vue'
 

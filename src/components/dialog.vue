@@ -6,15 +6,18 @@
             width="600px"
             :before-close="close">
             
-            <el-form ref="form" :model="form" label-width="80px">
+            <el-form ref="form" :model="formData" label-width="80px">
                 <el-form-item label="标题">
-                    <el-input v-model="form.title"></el-input>
+                    <el-input v-model="formData.title"></el-input>
                 </el-form-item>
                 <el-form-item label="URL">
-                    <el-input v-model="form.url"></el-input>
+                    <el-input v-model="formData.url"></el-input>
+                </el-form-item>
+                <el-form-item label="icon">
+                    <el-input v-model="formData.icon"></el-input>
                 </el-form-item>
                 <el-form-item label="父级菜单">
-                    <el-input v-model="form.parentId"></el-input>
+                    <el-input v-model="formData.parentId"></el-input>
                 </el-form-item>
             </el-form>
 
@@ -35,6 +38,9 @@ export default {
         dialogVisible: {
             type: Boolean,
             required: true
+        },
+        formData: {
+            type: Object
         }
     },
     watch: {
@@ -51,8 +57,7 @@ export default {
     },
     data() {
         return {
-            visible: false,
-            form: {}
+            visible: false
         }
     },
     methods: {
@@ -60,7 +65,7 @@ export default {
             this.visible = false
         },
         handleSubmit() {
-            this.$emit('submit', this.form)
+            this.$emit('submit', this.formData)
         }
     }
 }
