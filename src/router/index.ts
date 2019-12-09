@@ -6,6 +6,7 @@ Vue.use(VueRouter)
 import Layout from '@/views/layout/index.vue'
 import Home from '@/views/home/index.vue'
 import Menu from '@/views/menu/index.vue'
+import Role from '@/views/role/index.vue'
 
 const routes = [
   {
@@ -27,6 +28,13 @@ const routes = [
           title: "菜单"
         },
         component: Menu
+      },
+      {
+        path: '/role',
+        meta: {
+          title: "角色",
+        },
+        component: Role
       }
     ]
   }
