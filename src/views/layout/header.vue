@@ -7,12 +7,12 @@
             <el-breadcrumb-item>活动详情</el-breadcrumb-item>
         </el-breadcrumb> -->
 
-        <el-breadcrumb separator="/">
+        <!-- <el-breadcrumb separator="/">
             <el-breadcrumb-item v-for="(item,index) in breadList" :key="item.path">
                 <span v-if="item.redirect === 'noRedirect' || index == breadList.length-1" class="no-redirect">{{ item.meta.title }}</span>
                 <a v-else @click.prevent="handleLink(item)">{{ item.meta.title }}</a>
             </el-breadcrumb-item>
-        </el-breadcrumb>
+        </el-breadcrumb> -->
         
         <div>
             <el-dropdown>

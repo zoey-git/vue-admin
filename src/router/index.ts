@@ -7,6 +7,7 @@ import Layout from '@/views/layout/index.vue'
 import Home from '@/views/home/index.vue'
 import Menu from '@/views/menu/index.vue'
 import Role from '@/views/role/index.vue'
+import Login from '@/views/user/login.vue'
 
 const routes = [
   {
@@ -37,6 +38,11 @@ const routes = [
         component: Role
       }
     ]
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: Login
   }
 ]
 

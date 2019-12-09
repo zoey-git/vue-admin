@@ -69,7 +69,7 @@ export default {
             this.dialogVisible = true
         },
         handleSubmit(form) {
-            changeMenu(form).then(res => {
+            addMenu(form).then(res => {
                 if (res.code === 200) {
                     this.getList()
                     this.$refs.dialog.close()
