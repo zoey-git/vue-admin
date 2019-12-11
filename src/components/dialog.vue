@@ -7,17 +7,16 @@
             :before-close="close">
             
             <el-form ref="form" :model="formData" label-width="80px">
-                <el-form-item label="标题">
-                    <el-input v-model="formData.title"></el-input>
-                </el-form-item>
-                <el-form-item label="URL">
-                    <el-input v-model="formData.url"></el-input>
-                </el-form-item>
-                <el-form-item label="icon">
-                    <el-input v-model="formData.icon"></el-input>
-                </el-form-item>
-                <el-form-item label="父级菜单">
-                    <el-input v-model="formData.parentId"></el-input>
+                <el-form-item :label="item.label" v-for="item in formItem" :key="item.key">
+                    <el-select v-if="item.type === 'select'" v-model="formData[item.key]" placeholder="请选择">
+                        <el-option
+                            v-for="option in item.options"
+                            :key="option.key"
+                            :label="option.label"
+                            :value="option.key">
+                        </el-option>
+                    </el-select>
+                    <el-input v-else v-model="formData[item.key]"></el-input>
                 </el-form-item>
             </el-form>
 
@@ -41,6 +40,9 @@ export default {
         },
         formData: {
             type: Object
+        },
+        formItem: {
+            type: Array
         }
     },
     watch: {

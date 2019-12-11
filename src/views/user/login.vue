@@ -16,6 +16,8 @@
 const { getPhoto, login, register } = require('@/api/user')
 import { MD5 } from '@/util/index'
 import inputForm from './components/inputForm'
+import { SET_MENU_LIST } from '@/store/types'
+import { mapActions, mapGetters } from 'vuex'
 export default {
     data() {
         return {
@@ -44,6 +46,7 @@ export default {
             login(params).then(res => {
                 if (res.code === 200) {
                     localStorage.setItem('user', JSON.stringify(res.data))
+                    this.setMenu()
                     this.$router.push({
                         path: '/'
                     })
@@ -72,7 +75,10 @@ export default {
         },
         goLogin() {
             this.type = 'login'
-        }
+        },
+        ...mapActions({
+            setMenu: SET_MENU_LIST
+        })
     },
     mounted() {
         let params = {

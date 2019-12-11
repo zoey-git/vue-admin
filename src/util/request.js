@@ -1,10 +1,12 @@
 import axios from 'axios'
 import router from '../router/index'
+import { getToken } from './index'
+
+
 const BASE_URL = '/api'
 
 axios.interceptors.request.use(config => {
-    let data = localStorage.getItem('user') || '{}'
-    let user = JSON.parse(data)
+    let user = getToken()
     if (user.token) {
         config.headers = {
             'Authorization': 'Bearer ' + user.token

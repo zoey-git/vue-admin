@@ -5,7 +5,7 @@
                 :router="true"
                 background-color="#545c64" :collapse="isCollapse"
                 active-text-color="#ffd04b">
-                <menu-item v-for="item in menuList" :key="item.id" :item="item" :url="item.url"/>
+                <menu-item v-for="item in treeMenu" :key="item.id" :item="item" :url="item.url"/>
             </el-menu>
         </el-scrollbar>
     </div>
@@ -14,11 +14,14 @@
 <script>
 import menuItem from '@/components/menuItem'
 import { getMenuList, delMenuList, addMenu } from '@/api/menu'
+import { SET_MENU_LIST } from '@/store/types'
+import { mapActions, mapGetters } from 'vuex'
+import { setTree } from '@/util/index'
 export default {
     data() {
         return {
             isCollapse: false,
-            menuList: []
+            treeMenu: []
         }
     },
     computed: {
@@ -26,30 +29,16 @@ export default {
             return {
                 hideMenu: true
             }
-        }
+        },
+        ...mapGetters([
+            'menuList'
+        ])
     },
     methods: {
         getList() {
-            getMenuList().then(res => {
-                if (res.code === 200) {
-                    let data = res.data
-                    let handleTree = (arr, parentId) => {
-                        let list = JSON.parse(JSON.stringify(arr))
-                        let newArr = []
-                        for(let i = 0; i < list.length; i++) {
-                            let obj = list[i]
-                            if (obj.parentId == parentId) {
-                                let item = { ...obj }
-                                item.children = handleTree(list, obj.id)
-                                newArr.push(item)
-                            }
-                        }
-                        return newArr
-                    }
-                    this.menuList = handleTree(data, -1)
-                }
-            })
+            this.treeMenu = setTree(this.menuList, -1)
         },
+        
     },
     mounted() {
         this.getList()
