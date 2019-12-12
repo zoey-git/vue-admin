@@ -8,8 +8,12 @@ import '@/assets/style/cssreset.css'
 import '@/assets/style/base.scss'
 
 import Dialog from '@/components/dialog.vue'
+import Table from '@/components/Table.vue'
+import Search from '@/components/Search.vue'
 
 Vue.component('Dialog', Dialog)
+Vue.component('cmTable', Table)
+Vue.component('Search', Search)
 
 Vue.config.productionTip = false
 

@@ -1,35 +1,7 @@
 <template>
     <div>
-        <el-card class="box-card">
-            <el-button type="primary" @click="handleAddMenu">添加</el-button>
-        </el-card>
-        <el-table
-            :data="tableData">
-            <el-table-column
-                prop="title"
-                label="标题">
-            </el-table-column>
-            <el-table-column
-                prop="url"
-                label="url">
-            </el-table-column>
-            <el-table-column
-                prop="icon"
-                label="icon">
-            </el-table-column>
-             <el-table-column label="操作">
-                <template slot-scope="scope">
-                    <el-button
-                        size="mini"
-                        type="success"
-                        @click="handleEdit(scope.row)">编辑</el-button>
-                    <el-button
-                        size="mini"
-                        type="danger"
-                        @click="handleDelete(scope.row)">删除</el-button>
-                </template>
-            </el-table-column>
-        </el-table>
+        <Search  />
+        <cm-table :tableData="tableData" :page="page" @currentChange="currentChange" @sizeChange="sizeChange"/>
         <Dialog ref="dialog" title="添加菜单" :formData="formData" :dialogVisible.sync="dialogVisible"
         @submit="handleSubmit"/>
     </div>
@@ -42,7 +14,12 @@ export default {
         return {
             tableData: [],
             formData: {},
-            dialogVisible: false
+            dialogVisible: false,
+            page: {
+                total: 10,
+                currentPage: 1,
+                pageSize: 10
+            }
         }
     },
     methods: {
@@ -77,6 +54,34 @@ export default {
                 if (res.code === 200) {
                     this.getList()
                     this.$refs.dialog.close()
+                }
+            })
+        },
+        currentChange(page) {
+            this.page.currentPage = page
+            let params = {
+                page: {
+                    currentPage: this.page.currentPage,
+                    pageSize: this.page.pageSize
+                }
+            }
+            getMenuList(params).then(res => {
+                if (res.code === 200) {
+                    this.tableData = res.data
+                }
+            })
+        },
+        sizeChange(size) {
+            this.page.pageSize = size
+            let params = {
+                page: {
+                    currentPage: this.page.currentPage,
+                    pageSize: this.page.pageSize
+                }
+            }
+            getMenuList(params).then(res => {
+                if (res.code === 200) {
+                    this.tableData = res.data
                 }
             })
         }
