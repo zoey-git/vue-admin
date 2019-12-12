@@ -22,7 +22,7 @@ export default {
         })
     },
     [SET_ROUTES]({state, commit}: any) {
-        let menuList = state.menuList || JSON.parse(localStorage.getItem('menuList') || '[]')
+        let menuList = state.menuList.length > 0 ? state.menuList : JSON.parse(localStorage.getItem('menuList') || '[]')
         let menus: any[] = []
         menuList.map((item: any) => {
             if (item.url) {
@@ -35,7 +35,8 @@ export default {
                 })
             }
         })
-        commit(SET_MENU_LIST, menus)
+        menus.push({ path: '*', redirect: '/404' })
+        commit(SET_ROUTES, menus)
         return menus
     }
 }
