@@ -46,10 +46,14 @@ export default {
             login(params).then(res => {
                 if (res.code === 200) {
                     localStorage.setItem('user', JSON.stringify(res.data))
-                    this.setMenu()
-                    this.$router.push({
-                        path: '/'
+                    this.setMenu().then(res=>{
+                        if(res.code) {
+                            this.$router.push({
+                                path: '/'
+                            })
+                        }
                     })
+                    
                 } else {
                     this.$message({
                         type: 'error',

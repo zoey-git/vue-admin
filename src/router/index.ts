@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import store from '@/store/index'
 import { SET_ROUTES } from '@/store/types'
 import routes from './routes'
-const { getToken } = require('@/util/index.js')
+const { getToken } = require('@/util/index.ts')
 
 Vue.use(VueRouter)
 
@@ -21,9 +21,8 @@ router.beforeEach((to, from, next) => {
     } else {
       if(store.getters.routes.length === 0 && i < 20) {
           i++
-          store.dispatch(SET_ROUTES).then(res => {
-            router.options.routes[1].children.push(...res)
-            router.addRoutes(router.options.routes);
+          store.dispatch(SET_ROUTES).then(route => {
+            router.addRoutes(route);
             next({ ...to, replace: true })
           })
       } else {

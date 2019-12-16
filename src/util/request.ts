@@ -1,7 +1,8 @@
 import axios from 'axios'
-import router from '../router/index'
 import { getToken } from './index'
-
+import { Message } from 'element-ui'
+import store from '@/store/index'
+import { LOG_OUT } from '@/store/types'
 
 const BASE_URL = '/api'
 
@@ -18,16 +19,15 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(res => {
     // token失效重新登录
     if (res.data.code === 302) {
-        router.replace({
-            path: '/login'
-        })
+        Message.error('登录过期，请重新登录');
+        store.dispatch(LOG_OUT)
     }
     return res
 })
 
 
 
-export const get = (url, params) => {
+export const get = (url: string, params: {}) => {
     return new Promise((resolve, reject) => {
         axios.get(BASE_URL + url, { params }).then(res => {
             resolve(res.data)
@@ -37,7 +37,7 @@ export const get = (url, params) => {
     })
 }
 
-export const post = (url, params) => {
+export const post = (url: string, params: {}) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'POST',
@@ -54,7 +54,7 @@ export const post = (url, params) => {
     })
 }
 
-export const del = (url, params) => {
+export const del = (url: string, params: {}) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'DELETE',
@@ -72,7 +72,7 @@ export const del = (url, params) => {
 }
 
 
-export const put = (url, params) => {
+export const put = (url: string, params: {}) => {
     return new Promise((resolve, reject) => {
         axios({
             method: 'PUT',
