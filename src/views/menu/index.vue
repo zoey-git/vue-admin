@@ -1,5 +1,20 @@
 <template>
     <div>
+        <el-upload
+            class="upload-demo"
+            action="/api/upload/head"
+            :on-preview="handlePreview"
+            multiple
+            :limit="3"
+            name="file"
+            :headers="headers"
+            :on-success="handleSuccess"
+            :on-exceed="handleExceed"
+            :file-list="fileList">
+            <el-button size="small" type="primary">点击上传</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+        </el-upload>
+        <img :src="url" alt="">
         <Search  />
         <cm-table :tableData="tableData" :page="page" @currentChange="currentChange" @sizeChange="sizeChange"/>
         <Dialog ref="dialog" title="添加菜单" :formData="formData" :dialogVisible.sync="dialogVisible"
@@ -19,7 +34,12 @@ export default {
                 total: 10,
                 currentPage: 1,
                 pageSize: 10
-            }
+            },
+            fileList: [],
+            headers: {
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InpvZXk0IiwicGFzc3dvcmQiOiIkMmIkMTAkaHlBUTdZdzRTVHh2NVY2UldORXpsLmpTRXBPb1NoRjFhdVFuOUgzMThGYjJUZEFHTDRZSW0iLCJpYXQiOjE1NzY1MDA4MjYsImV4cCI6MTU3NjUwNDQyNn0.AaXMK0P8sgo9UN9gS-iKLZdlZ4poFQCUOJDnKZcz1LY'
+            },
+            url: ''
         }
     },
     methods: {
@@ -84,6 +104,18 @@ export default {
                     this.tableData = res.data
                 }
             })
+        },
+        handleExceed(event) {
+            console.log(event);
+            
+        },
+        handleSuccess(event) {
+            console.log(event.data.url);
+            this.url = event.data.url
+        },
+        handlePreview(event) {
+            console.log(event);
+            
         }
     },
     mounted() {
