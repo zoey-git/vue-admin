@@ -9,6 +9,10 @@ interface photoParams {
     urls: boolean,
     https: boolean
 }
+interface updateHeadParams {
+    userId: String,
+    headUrl: String
+}
 
 
 export const getPhoto = (params: photoParams) => {
@@ -20,4 +24,7 @@ export const login = (params: loginParams) => {
 }
 export const register = (params: loginParams) => {
     return post('/user/register', params)
+}
+export const updateHead = (params: updateHeadParams) => {
+    return post('/user/updateHead', params)
 }
