@@ -1,10 +1,10 @@
 <template>
     <div class="sidebar-container" :class="classObj">
         <el-scrollbar wrap-class="scrollbar-wrapper">
-            <el-menu text-color="#fff"
+            <el-menu text-color="rgb(191, 203, 217)"
                 :router="true"
-                background-color="#545c64" :collapse="isCollapse"
-                active-text-color="#ffd04b">
+                :collapse="isCollapse"
+                active-text-color="rgb(64, 158, 255)">
                 <menu-item v-for="item in treeMenu" :key="item.id" :item="item" :url="item.url"/>
             </el-menu>
         </el-scrollbar>
@@ -58,7 +58,21 @@ export default {
     }
     .sidebar-container {
         width: 210px;
-        background-color:#545c64;
+        background-color:rgb(48, 65, 86);
+        .is-active.is-opened {
+            .el-submenu__title {
+                color: #fff !important;
+            }
+        }
+        .el-submenu__title:hover {
+            background-color: #263445!important;
+        }
+        .el-submenu > .el-submenu__title {
+            background-color:rgb(48, 65, 86);
+        }
+        .el-submenu .el-menu-item {
+            background-color: #1f2d3d!important;
+        }
     }
     .scrollbar-wrapper {
         overflow-x: hidden !important;

@@ -1,19 +1,21 @@
 <template>
     <div class="cm-search">
         <el-form ref="form" :inline="true" :model="form" label-width="80px">
-            <el-form-item label="活动名称">
-                <el-input v-model="form.name"></el-input>
-            </el-form-item>
-            <el-form-item label="活动区域">
-                <el-select v-model="form.region" placeholder="请选择活动区域">
-                <el-option label="区域一" value="shanghai"></el-option>
-                <el-option label="区域二" value="beijing"></el-option>
+            <el-form-item :label="item.label" v-for="(item) in formItem" :key="item.key">
+                <el-select v-if="item.type === 'select'" v-model="formData[item.key]" placeholder="请选择">
+                  <el-option
+                    v-for="item in item.options"
+                    :key="item.key"
+                    :label="item.label"
+                    :value="item.key">
+                  </el-option>
                 </el-select>
-            </el-form-item>
-            
+                <el-input v-else v-model="formData[item.key]"></el-input>
+            </el-form-item>           
            
             <el-form-item>
                 <el-button type="primary" @click="onSubmit">搜索</el-button>
+                <slot></slot>
             </el-form-item>
         </el-form>
     </div>
@@ -22,6 +24,14 @@
 <script>
 export default {
     name: 'Search',
+    props: {
+      formItem: {
+        type: Array
+      },
+      formData: {
+        type: Object
+      }
+    },
     data() {
       return {
         form: {

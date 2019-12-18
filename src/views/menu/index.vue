@@ -1,25 +1,65 @@
 <template>
     <div>
-        <Search  />
-        <cm-table :tableData="tableData" :page="page" @currentChange="currentChange" @sizeChange="sizeChange"/>
-        <Dialog ref="dialog" title="添加菜单" :formData="formData" :dialogVisible.sync="dialogVisible"
+        <Search :formItem="formItem" :formData="formData">
+            <el-button type="primary" @click="handleAddMenu">添加菜单</el-button>
+        </Search>
+        <cm-table :tableData="tableData" :tableColumn="tableColumn" :tableBtn="tableBtn" :page="page" @currentChange="currentChange" @sizeChange="sizeChange"/>
+        <Dialog ref="dialog" title="添加菜单" :formItem="dialogFormItem" :formData="dialogFormData" :dialogVisible.sync="dialogVisible"
         @submit="handleSubmit"/>
     </div>
 </template>
 
 <script>
-import { getMenuList, delMenuList, addMenu, changeMenu } from '@/api/menu'
+import { getMenuList, getMenuListAll, delMenuList, addMenu, changeMenu } from '@/api/menu'
+import { setTree } from '@/util/index'
 export default {
     data() {
         return {
+            tableColumn: [
+                { label: '标题', prop: 'title'},
+                { label: 'url', prop: 'url'},
+                { label: 'icon', prop: 'icon'},
+            ],
             tableData: [],
-            formData: {},
+            tableBtn: [
+                { label: '编辑', type: "info", callback: (row) => {
+                    this.handleEdit(row)
+                }}
+            ],
+            dialogFormData: {},
+            dialogFormItem: [
+                {
+                    label: '标题',
+                    key: 'title'
+                },
+                {
+                    label: '父级ID',
+                    key: 'parentId',
+                    type: 'select',
+                    options: []
+                },
+                {
+                    label: 'URL',
+                    key: 'url'
+                },
+                {
+                    label: 'ICON',
+                    key: 'icon'
+                },
+            ],
             dialogVisible: false,
             page: {
                 total: 10,
                 currentPage: 1,
                 pageSize: 10
-            }
+            },
+            formData: {},
+            formItem: [
+                {
+                    label: '标题',
+                    key: 'title'
+                }
+            ]
         }
     },
     methods: {
@@ -43,19 +83,44 @@ export default {
             })
         },
         handleAddMenu() {
-            this.dialogVisible = true
-        },
-        handleEdit(row) {
-            this.formData = row
-            this.dialogVisible = true
-        },
-        handleSubmit(form) {
-            addMenu(form).then(res => {
+            getMenuListAll().then(res=>{
                 if (res.code === 200) {
-                    this.getList()
-                    this.$refs.dialog.close()
+                    let list = []
+                    res.data.map(item => {
+                        list.push({
+                            label: item.title,
+                            key: item.id
+                        })
+                    })
+                    this.dialogFormItem.map(item => {
+                        if (item.key === 'parentId') {
+                            item.options = list
+                        }
+                    })
+                    this.dialogVisible = true
                 }
             })
+        },
+        handleEdit(row) {
+            this.dialogFormData = row
+            this.dialogVisible = true
+        },
+        handleSubmit() {
+            if(this.dialogFormData.id) {
+                changeMenu(this.dialogFormData).then(res => {
+                    if (res.code === 200) {
+                        this.getList()
+                        this.$refs.dialog.close()
+                    }
+                })
+            } else {
+                addMenu(this.dialogFormData).then(res => {
+                    if (res.code === 200) {
+                        this.getList()
+                        this.$refs.dialog.close()
+                    }
+                })
+            }
         },
         currentChange(page) {
             this.page.currentPage = page
