@@ -15,7 +15,8 @@
             </div>
             <div class="user">
                 <div class="head">
-                    <img :src="user.head" alt="">
+                    <div v-if="!user.head" class="el-icon-user-solid" style="font-size: 34px;"></div>
+                    <img v-else :src="user.head" alt="">
                 </div>
                 <div>{{user.userName}}</div>
                 <el-dropdown @command="handleClick">

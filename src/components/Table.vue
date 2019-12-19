@@ -11,6 +11,7 @@
             </el-table-column>
 
             <el-table-column
+                v-if="isShowDel || tableBtn && tableBtn.length > 0"
                 label="操作"
                 fixed="right"
                 width="100">
@@ -21,6 +22,7 @@
                         :type="item.type || 'info'"
                         @click="item.callback && item.callback(scope.row)">{{item.label}}</el-button>
                     <el-button
+                        v-if="isShowDel"
                         size="mini"
                         type="danger"
                         @click="handleDelete(scope.row)">删除</el-button>
@@ -58,6 +60,10 @@ export default {
         },
         page: {
             type: Object
+        },
+        isShowDel: {
+            type: Boolean,
+            default: true
         }
     },
     data() {
