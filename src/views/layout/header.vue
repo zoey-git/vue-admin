@@ -15,30 +15,32 @@
             </div>
             <div class="user">
                 <div class="head">
-                    <img src="@/assets/images/2.jpg" alt="">
+                    <div v-if="!user.head" class="el-icon-user-solid" style="font-size: 34px;"></div>
+                    <img v-else :src="user.head" alt="">
                 </div>
                 <div>{{user.userName}}</div>
-                <el-dropdown>
+                <el-dropdown @command="handleClick">
                     <i class="el-icon-caret-bottom" style="margin-right: 15px"></i>
                     <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>查看</el-dropdown-item>
-                        <el-dropdown-item>新增</el-dropdown-item>
-                        <el-dropdown-item>删除</el-dropdown-item>
+                        <el-dropdown-item command="updateHead">修改头像</el-dropdown-item>
+                        <el-dropdown-item command="logOut">退出登录</el-dropdown-item>
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
         </div>
+        <UpdateHead ref="updateHead" :user="user"/>
     </el-header>
 </template>
 
 <script>
 import { full } from '@/util/index'
+import UpdateHead from './components/UpdateHead'
 export default {
     data() {
         return {
             breadList: [],
             user: {},
-            isFull: 'el-icon-menu'
+            isFull: 'el-icon-menu',
         }
     },
     watch: {
@@ -49,7 +51,7 @@ export default {
             this.getBreadcrumb()
         }
     },
-    mounted() {
+    created() {
         this.getBreadcrumb()
         this.user = JSON.parse(localStorage.getItem('user') || "{}")
     },
@@ -80,7 +82,24 @@ export default {
         handleFull() {
             this.isFull = this.isFull === 'el-icon-menu' ? 'el-icon-s-grid' : 'el-icon-menu'
             full()
-        }
+        },
+        handleClick(command) {
+            if( command === 'updateHead') {
+                this.updateHead()
+            } else if (command === 'logOut') {
+                this.logOut()
+            }
+        },
+        updateHead() {
+            this.$refs.updateHead.dialogVisible = true
+        },
+        logOut() {
+
+        },
+        
+    },
+    components: {
+        UpdateHead
     }
 }
 </script>

@@ -1,45 +1,65 @@
 <template>
     <div>
-        <el-upload
-            class="upload-demo"
-            action="/api/upload/head"
-            :on-preview="handlePreview"
-            multiple
-            :limit="3"
-            name="file"
-            :headers="headers"
-            :on-success="handleSuccess"
-            :on-exceed="handleExceed"
-            :file-list="fileList">
-            <el-button size="small" type="primary">点击上传</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-        </el-upload>
-        <img :src="url" alt="">
-        <Search  />
-        <cm-table :tableData="tableData" :page="page" @currentChange="currentChange" @sizeChange="sizeChange"/>
-        <Dialog ref="dialog" title="添加菜单" :formData="formData" :dialogVisible.sync="dialogVisible"
+        <Search :formItem="formItem" :formData="formData">
+            <el-button type="primary" @click="handleAddMenu">添加菜单</el-button>
+        </Search>
+        <cm-table :tableData="tableData" :tableColumn="tableColumn" :tableBtn="tableBtn" :page="page" @currentChange="currentChange" @sizeChange="sizeChange"/>
+        <Dialog ref="dialog" title="添加菜单" :formItem="dialogFormItem" :formData="dialogFormData" :dialogVisible.sync="dialogVisible"
         @submit="handleSubmit"/>
     </div>
 </template>
 
 <script>
-import { getMenuList, delMenuList, addMenu, changeMenu } from '@/api/menu'
+import { getMenuList, getMenuListAll, delMenuList, addMenu, changeMenu } from '@/api/menu'
+import { setTree } from '@/util/index'
 export default {
     data() {
         return {
+            tableColumn: [
+                { label: '标题', prop: 'title'},
+                { label: 'url', prop: 'url'},
+                { label: 'icon', prop: 'icon'},
+            ],
             tableData: [],
-            formData: {},
+            tableBtn: [
+                { label: '编辑', type: "info", callback: (row) => {
+                    this.handleEdit(row)
+                }}
+            ],
+            dialogFormData: {},
+            dialogFormItem: [
+                {
+                    label: '标题',
+                    key: 'title'
+                },
+                {
+                    label: '父级ID',
+                    key: 'parentId',
+                    type: 'select',
+                    options: []
+                },
+                {
+                    label: 'URL',
+                    key: 'url'
+                },
+                {
+                    label: 'ICON',
+                    key: 'icon'
+                },
+            ],
             dialogVisible: false,
             page: {
                 total: 10,
                 currentPage: 1,
                 pageSize: 10
             },
-            fileList: [],
-            headers: {
-                Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InpvZXk0IiwicGFzc3dvcmQiOiIkMmIkMTAkaHlBUTdZdzRTVHh2NVY2UldORXpsLmpTRXBPb1NoRjFhdVFuOUgzMThGYjJUZEFHTDRZSW0iLCJpYXQiOjE1NzY1MDA4MjYsImV4cCI6MTU3NjUwNDQyNn0.AaXMK0P8sgo9UN9gS-iKLZdlZ4poFQCUOJDnKZcz1LY'
-            },
-            url: ''
+            formData: {},
+            formItem: [
+                {
+                    label: '标题',
+                    key: 'title'
+                }
+            ]
         }
     },
     methods: {
@@ -63,19 +83,44 @@ export default {
             })
         },
         handleAddMenu() {
-            this.dialogVisible = true
-        },
-        handleEdit(row) {
-            this.formData = row
-            this.dialogVisible = true
-        },
-        handleSubmit(form) {
-            addMenu(form).then(res => {
+            getMenuListAll().then(res=>{
                 if (res.code === 200) {
-                    this.getList()
-                    this.$refs.dialog.close()
+                    let list = []
+                    res.data.map(item => {
+                        list.push({
+                            label: item.title,
+                            key: item.id
+                        })
+                    })
+                    this.dialogFormItem.map(item => {
+                        if (item.key === 'parentId') {
+                            item.options = list
+                        }
+                    })
+                    this.dialogVisible = true
                 }
             })
+        },
+        handleEdit(row) {
+            this.dialogFormData = row
+            this.dialogVisible = true
+        },
+        handleSubmit() {
+            if(this.dialogFormData.id) {
+                changeMenu(this.dialogFormData).then(res => {
+                    if (res.code === 200) {
+                        this.getList()
+                        this.$refs.dialog.close()
+                    }
+                })
+            } else {
+                addMenu(this.dialogFormData).then(res => {
+                    if (res.code === 200) {
+                        this.getList()
+                        this.$refs.dialog.close()
+                    }
+                })
+            }
         },
         currentChange(page) {
             this.page.currentPage = page
@@ -104,18 +149,6 @@ export default {
                     this.tableData = res.data
                 }
             })
-        },
-        handleExceed(event) {
-            console.log(event);
-            
-        },
-        handleSuccess(event) {
-            console.log(event.data.url);
-            this.url = event.data.url
-        },
-        handlePreview(event) {
-            console.log(event);
-            
         }
     },
     mounted() {

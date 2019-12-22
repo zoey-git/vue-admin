@@ -11,6 +11,7 @@
             </el-table-column>
 
             <el-table-column
+                v-if="isShowDel || tableBtn && tableBtn.length > 0"
                 label="操作"
                 fixed="right"
                 width="100">
@@ -21,6 +22,7 @@
                         :type="item.type || 'info'"
                         @click="item.callback && item.callback(scope.row)">{{item.label}}</el-button>
                     <el-button
+                        v-if="isShowDel"
                         size="mini"
                         type="danger"
                         @click="handleDelete(scope.row)">删除</el-button>
@@ -28,12 +30,12 @@
             </el-table-column>
         </el-table>
 
-        <div class="page">
+        <div class="page" v-if="page">
             <el-pagination
                 background
                 @size-change="handleSizeChange"
                 @current-change="handleCurrentChange"
-                :current-page="page.currentPage"
+                :current-page="page.currentPage || 10"
                 :page-sizes="[4, 10, 20, 30, 50]"
                 :page-size="100"
                 layout="total, sizes, prev, pager, next, jumper"
@@ -47,25 +49,25 @@
 export default {
     name: "cm-table",
     props: {
+        tableColumn: {
+            type: Array
+        },
         tableData: {
+            type: Array
+        },
+        tableBtn: {
             type: Array
         },
         page: {
             type: Object
+        },
+        isShowDel: {
+            type: Boolean,
+            default: true
         }
     },
     data() {
         return {
-            tableColumn: [
-                { label: '标题', prop: 'title'},
-                { label: 'url', prop: 'url'},
-                { label: 'icon', prop: 'icon'},
-            ],
-            tableBtn: [
-                { label: '编辑', type: "info", callback: (row) => {
-                    console.log(row)
-                }}
-            ],
             currentPage: 10
         }
     },
