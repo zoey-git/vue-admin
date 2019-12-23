@@ -5,6 +5,7 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
 export default {
   data() {
     return {
@@ -12,21 +13,13 @@ export default {
     }
   },
   mounted() {
-    this.$socket.emit('connect', 'hello')
-    this.$socket.emit('msg', '哈哈哈')
-    this.$socket.on('news', (msg) => {
+    const socket = io('http://127.0.0.1:3000')
+    socket.on('news', (msg) => {
       console.log(msg);
-      
     })
-    // console.log(socket);
-    
-    // console.log(socket);
-    
-    // const socket = socket.connect('http://localhost');
-    // socket.on('news', (msg) => {
-    //   console.log('msg: ', msg);
-    //   socket.emit('msg', { my: 'data' });
-    // });
+    setTimeout(() => {
+      socket.emit('msg', '这是msg')
+    },5000)
   }
 }
 </script>
