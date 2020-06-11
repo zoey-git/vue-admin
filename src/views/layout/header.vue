@@ -73,7 +73,13 @@ export default {
             if (!this.isDashboard(first)) {
                 matched = [{ path: '/home', meta: { title: '首页' }}].concat(matched)
             }
-            this.breadList = matched.filter(item => item.meta && item.meta.title)
+            let obj = {}
+            this.breadList = matched.filter(item => item.meta && item.meta.title).reduce((cur,next) => {
+                obj[next.path] ? "" : obj[next.path] = true && cur.push(next);
+                return cur;
+            },[])
+            console.log(this.breadList);
+            
         },
         isDashboard(route) {            
             let name = route && route.name
