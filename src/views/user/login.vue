@@ -48,12 +48,9 @@ export default {
                     localStorage.setItem('user', JSON.stringify(res.data))
                     this.setMenu().then(res=>{
                         if(res.code) {
-                            this.$router.push({
-                                path: '/'
-                            })
+                            this.$router.push({ path: '/' })
                         }
                     })
-                    
                 } else {
                     this.$message({
                         type: 'error',

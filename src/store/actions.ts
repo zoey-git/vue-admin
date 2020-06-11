@@ -1,4 +1,4 @@
-import { SET_MENU_LIST, SET_ROUTES, LOG_OUT } from './types'
+import { SET_MENU_LIST, SET_ROUTES, LOG_OUT, SET_IS_COLLAPSE } from './types'
 
 const { getMenuList } = require('../api/menu.js')
 
@@ -81,5 +81,9 @@ export default {
     },
     [LOG_OUT]({state, commit}: any):any {
         commit(LOG_OUT)
+    },
+    [SET_IS_COLLAPSE]({ state, commit}: any): any {
+        let type = state.isCollapse
+        commit(SET_IS_COLLAPSE, !type)
     }
 }

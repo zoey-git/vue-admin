@@ -1,5 +1,6 @@
 export default {
     menuList: [],
     routes: [],
-    user: {}
+    user: {},
+    isCollapse: false
 }

@@ -1,4 +1,4 @@
-import { SET_MENU_LIST, SET_ROUTES, LOG_OUT } from './types'
+import { SET_MENU_LIST, SET_ROUTES, LOG_OUT, SET_IS_COLLAPSE } from './types'
 import router from '../router/index'
 
 export default {
@@ -14,5 +14,8 @@ export default {
         router.replace({
             path: '/login'
         })
+    },
+    [SET_IS_COLLAPSE](state: any, isCollapse: boolean) {
+        state.isCollapse = isCollapse
     }
 }

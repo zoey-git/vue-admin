@@ -1,6 +1,9 @@
 <template>
     <el-header class="layout_header">
         <div>
+            <div class="collapse" @click="handleCollapse">
+                <i :class="showMenuClasses"></i>
+            </div>
             <el-breadcrumb separator="/">
                 <el-breadcrumb-item v-for="(item,index) in breadList" :key="item.path">
                     <span v-if="item.redirect === 'noRedirect' || index == breadList.length-1" class="no-redirect">{{ item.meta.title }}</span>
@@ -35,12 +38,14 @@
 <script>
 import { full } from '@/util/index'
 import UpdateHead from './components/UpdateHead'
+import { SET_IS_COLLAPSE } from '@/store/types'
+import { mapActions, mapGetters } from 'vuex'
 export default {
     data() {
         return {
             breadList: [],
             user: {},
-            isFull: 'el-icon-menu',
+            isFull: 'el-icon-menu'
         }
     },
     watch: {
@@ -50,6 +55,12 @@ export default {
             }
             this.getBreadcrumb()
         }
+    },
+    computed: {
+        showMenuClasses() {
+            return this.isCollapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'
+        },
+        ...mapGetters(['isCollapse'])
     },
     created() {
         this.getBreadcrumb()
@@ -79,6 +90,9 @@ export default {
             }
             this.$router.push(path)
         },
+        /**
+         * 全屏
+         */
         handleFull() {
             this.isFull = this.isFull === 'el-icon-menu' ? 'el-icon-s-grid' : 'el-icon-menu'
             full()
@@ -96,7 +110,12 @@ export default {
         logOut() {
 
         },
-        
+        handleCollapse() {
+            this.setIsCollapse()
+        },
+        ...mapActions({
+            setIsCollapse: SET_IS_COLLAPSE
+        })
     },
     components: {
         UpdateHead
@@ -110,6 +129,11 @@ export default {
         justify-content: space-between;
         align-items: center;
         box-shadow: 0px 1px 3px 0px rgba(0,0,0,.2);
+        .collapse {
+            padding-right: 20px;
+            font-size: 28px;
+            cursor: pointer;
+        }
         > div {
             display: flex;
             align-items: center;

@@ -6,5 +6,6 @@ export default {
         return state.menuList.length > 0 ? state.menuList : JSON.parse(localStorage.getItem('menuList') || '[]')
     },
     routes: (state: any): any => state.routes,
-    user: (state:any): any => state.user
+    user: (state:any): any => state.user,
+    isCollapse: (state: any): any => state.isCollapse
 }

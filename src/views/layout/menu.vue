@@ -20,7 +20,6 @@ import { setTree } from '@/util/index'
 export default {
     data() {
         return {
-            isCollapse: false,
             treeMenu: []
         }
     },
@@ -31,7 +30,8 @@ export default {
             }
         },
         ...mapGetters([
-            'menuList'
+            'menuList',
+            'isCollapse'
         ])
     },
     methods: {
@@ -54,11 +54,20 @@ export default {
       height: 100%;
     }
     .el-menu {
-        width: 100%;
+        // width: 100%;
+        &:not(.el-menu--collapse) {
+            width: 210px;
+        }
     }
     .sidebar-container {
-        width: 210px;
+        // width: 210px;
         background-color:rgb(48, 65, 86);
+        .el-menu-item {
+            background-color: rgb(48, 65, 86) !important;
+            &:hover {
+                background-color: #263445!important;
+            }
+        }
         .is-active.is-opened {
             .el-submenu__title {
                 color: #fff !important;
