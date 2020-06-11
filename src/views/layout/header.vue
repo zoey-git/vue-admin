@@ -38,7 +38,7 @@
 <script>
 import { full } from '@/util/index'
 import UpdateHead from './components/UpdateHead'
-import { SET_IS_COLLAPSE } from '@/store/types'
+import { SET_IS_COLLAPSE, LOG_OUT } from '@/store/types'
 import { mapActions, mapGetters } from 'vuex'
 export default {
     data() {
@@ -114,13 +114,14 @@ export default {
             this.$refs.updateHead.dialogVisible = true
         },
         logOut() {
-
+            this.logOut()
         },
         handleCollapse() {
             this.setIsCollapse()
         },
         ...mapActions({
-            setIsCollapse: SET_IS_COLLAPSE
+            setIsCollapse: SET_IS_COLLAPSE,
+            logOut: LOG_OUT
         })
     },
     components: {
