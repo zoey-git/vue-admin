@@ -8,6 +8,10 @@
             <el-form-item label="密码">
                 <el-input type="password" v-model="form.password"></el-input>
             </el-form-item>
+            <el-form-item label="验证码" class="captcha">
+                <el-input v-model="form.captcha"></el-input>
+                <div style="display: inline-block;height: 40px;vertical-align: bottom;" v-html="captcha"></div>
+            </el-form-item>
             <div class="slot">
                 <slot name="handle"></slot>
             </div>
@@ -24,7 +28,8 @@ export default {
         title: {
             type: String,
             required: true
-        }
+        },
+        captcha: String
     },
     data() {
         return {
@@ -56,6 +61,11 @@ export default {
             padding-right: 40px;
             .login_btn {
                 width: 100%;
+            }
+            .captcha {
+                .el-input {
+                    width: 240px;
+                }
             }
         }
         .slot {

@@ -3,7 +3,7 @@
         <Search :formItem="formItem" :formData="formData">
             <el-button type="primary" @click="handleAddMenu">添加菜单</el-button>
         </Search>
-        <cm-table :tableData="tableData" :tableColumn="tableColumn" :tableBtn="tableBtn" :page="page" @currentChange="currentChange" @sizeChange="sizeChange"/>
+        <cm-table :tableData="tableData" :tableColumn="tableColumn" :tableBtn="tableBtn" :page="page" @currentChange="currentChange" @sizeChange="sizeChange" @del="handleDelete"/>
         <Dialog ref="dialog" title="添加菜单" :formItem="dialogFormItem" :formData="dialogFormData" :dialogVisible.sync="dialogVisible"
         @submit="handleSubmit"/>
     </div>
@@ -78,6 +78,8 @@ export default {
             let params = {
                 id: row.id
             }
+            console.log(row);
+            
             delMenuList(params).then(res => {
                 this.getList()
             })

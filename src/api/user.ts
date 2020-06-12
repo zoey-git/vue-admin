@@ -2,7 +2,8 @@ import { get, post, del, put} from '@/util/request'
 
 interface loginParams {
     userName: string,
-    password: string
+    password: string,
+    captcha: string
 }
 interface photoParams {
     count: number,
@@ -27,4 +28,7 @@ export const register = (params: loginParams) => {
 }
 export const updateHead = (params: updateHeadParams) => {
     return post('/user/updateHead', params)
+}
+export const captcha = (params: {}) => {
+    return post('/user/captcha', params)
 }

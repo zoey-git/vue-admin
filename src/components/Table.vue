@@ -73,7 +73,7 @@ export default {
     },
     methods: {
         handleDelete(row) {
-
+            this.$emit('del', row)
         },
         handleSizeChange(size) {
             this.$emit('sizeChange', size)

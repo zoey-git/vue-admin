@@ -1,9 +1,8 @@
 <template>
     <div class="login" :style="`background-image:url(${photo})`">
-        <inputForm @confirm="confirm" :title="title">
+        <inputForm @confirm="confirm" :title="title" :captcha="captcha">
             <template slot="handle">
                 <div v-if="type === 'login'">
-                    <el-button type="text">忘记密码？</el-button>
                     <el-button type="text" @click="goRegister">注册</el-button>
                 </div>
                 <el-button v-else type="text" @click="goLogin">登录</el-button>
@@ -13,7 +12,7 @@
 </template>
 
 <script>
-const { getPhoto, login, register } = require('@/api/user')
+const { getPhoto, login, register, captcha } = require('@/api/user')
 import { MD5 } from '@/util/index'
 import inputForm from './components/inputForm'
 import { SET_MENU_LIST } from '@/store/types'
@@ -22,7 +21,8 @@ export default {
     data() {
         return {
             photo: '',
-            type: 'login'
+            type: 'login',
+            captcha: ''
         }
     },
     computed: {
@@ -35,7 +35,8 @@ export default {
             let password = MD5(data.password)
             let params = {
                 userName: data.userName,
-                password: password
+                password: password,
+                captcha: data.captcha
             }
             if (this.type === 'login') {
                 return this.login(params)
@@ -89,6 +90,10 @@ export default {
         }
         getPhoto(params).then(res => {
             this.photo = res[0]
+        })
+        captcha().then(res => {
+            console.log(res);
+            this.captcha = res.data.url
         })
     },
     components: {
