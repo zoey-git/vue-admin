@@ -63,3 +63,44 @@ export function getPropByPath(obj: any, path: any, strict: any): any {
         v: tempObj ? tempObj[keyArr[i]] : null
 	}
 }
+
+class Filter {
+    doFilter(el: any) {
+
+    }
+}
+
+export class FilterChain extends Filter {
+    filters: any[] = []
+    constructor() {
+        super()
+        this.filters = []
+    }
+    addFilter(filter: any) {
+        this.filters.push(filter)
+    }
+    removeFilter() {
+        
+    }
+    doFilter(elements: any) {
+        this.filters.map(filter => {
+            elements = filter.doFilter(elements)
+        })
+        return elements
+    }
+}
+
+export class FilterParams extends Filter {
+    constructor() {
+        super()
+    }
+    doFilter(elements: any) {
+        let newElements: any = {}
+        for (var key in elements) {
+            if (!['', undefined, null].includes(elements[key])) {
+                newElements[key] = elements[key]
+            }
+        }
+        return newElements
+    }
+}

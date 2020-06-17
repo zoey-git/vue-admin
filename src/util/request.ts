@@ -3,6 +3,7 @@ import { getToken } from './index'
 import { Message } from 'element-ui'
 import store from '@/store/index'
 import { LOG_OUT } from '@/store/types'
+import { FilterChain, FilterParams } from './index'
 
 const BASE_URL = '/api'
 
@@ -38,6 +39,9 @@ export const get = (url: string, params: {}) => {
 }
 
 export const post = (url: string, params: {}) => {
+    let filterChain = new FilterChain()
+    filterChain.addFilter(new FilterParams())
+    params = filterChain.doFilter(params)
     return new Promise((resolve, reject) => {
         axios({
             method: 'POST',
