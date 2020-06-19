@@ -16,7 +16,7 @@ import menuItem from '@/components/menuItem'
 import { getMenuList, delMenuList, addMenu } from '@/api/menu'
 import { SET_MENU_LIST } from '@/store/types'
 import { mapActions, mapGetters } from 'vuex'
-import { setTree } from '@/util/index'
+import { setTree, sortTree } from '@/util/index'
 export default {
     data() {
         return {
@@ -36,7 +36,7 @@ export default {
     },
     methods: {
         getList() {
-            this.treeMenu = setTree(this.menuList, -1)
+            this.treeMenu = sortTree(setTree(this.menuList, -1))
         },
         
     },

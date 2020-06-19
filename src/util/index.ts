@@ -23,6 +23,21 @@ export const setTree = (arr: any[], parentId: string | number) => {
     return newArr
 }
 
+export const sortTree = (arr: any[]) => {
+    if (arr.length < 1) return arr
+    let leftArr: any[] = []
+    let rightArr: any[] = []
+    let cur: any[] = arr.splice(0, 1)
+    for(var i = 0; i < arr.length; i++) {
+        if (arr[i].order < cur[0].order) {
+            leftArr.push(arr[i])
+        } else {
+            rightArr.push(arr[i])
+        }
+    }
+    return [].concat(sortTree(leftArr), cur, sortTree(rightArr))
+}
+
 export const full = () => {
     if (document.fullscreenElement) {
         if (document.exitFullscreen) {

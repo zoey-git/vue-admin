@@ -43,6 +43,10 @@ export default {
                     key: 'url'
                 },
                 {
+                    label: '排序',
+                    key: 'order'
+                },
+                {
                     label: 'ICON',
                     key: 'icon'
                 },
