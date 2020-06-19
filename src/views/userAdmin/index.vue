@@ -30,7 +30,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <Dialog ref="dialog" title="添加菜单" :formData="formData" :formItem="formItem" :dialogVisible.sync="dialogVisible"
+        <Dialog ref="dialog" :title="dialogTitle" :formData="formData" :formItem="formItem" :dialogVisible.sync="dialogVisible"
         @submit="handleSubmit"/>
     </div>
 </template>
@@ -49,7 +49,8 @@ export default {
                 { label: '登录密码', key: 'password' },
                 { label: '所属角色', key: 'roleId', type: "select", options: [] },
             ],
-            dialogVisible: false
+            dialogVisible: false,
+            dialogTitle: ''
         }
     },
     methods: {
@@ -86,11 +87,15 @@ export default {
             })
         },
         handleAddMenu() {
+            this.dialogTitle = '添加菜单'
             this.dialogVisible = true
         },
         handleEdit(row) {
-            this.formData = row
+            this.dialogTitle = '编辑菜单'
             this.dialogVisible = true
+            this.$nextTick(() => {
+                this.formData = row
+            })
         },
         handleSubmit(form) {
             let password = MD5(form.password)

@@ -64,6 +64,7 @@ export default {
     },
     methods: {
         close() {
+            this.$refs.form.resetFields()
             this.visible = false
         },
         handleSubmit() {
