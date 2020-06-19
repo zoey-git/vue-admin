@@ -6,7 +6,7 @@
                 <el-input v-model="form.userName"></el-input>
             </el-form-item>
             <el-form-item label="密码">
-                <el-input type="password" v-model="form.password"></el-input>
+                <el-input type="password" v-model="form.password" show-password></el-input>
             </el-form-item>
             <el-form-item label="验证码" class="captcha">
                 <el-input v-model="form.captcha"></el-input>

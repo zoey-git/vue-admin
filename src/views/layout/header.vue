@@ -19,7 +19,7 @@
             <div class="user">
                 <div class="head">
                     <div v-if="!user.head" class="el-icon-user-solid" style="font-size: 34px;"></div>
-                    <img v-else :src="user.head" alt="">
+                    <el-avatar v-else size="large" :src="user.head"></el-avatar>
                 </div>
                 <div>{{user.userName}}</div>
                 <el-dropdown @command="handleClick">
@@ -147,7 +147,7 @@ export default {
             .full {
                 width: 30px;
                 height: 30px;
-                padding-right: 10px;
+                padding-right: 20px;
                 i {
                     font-size: 30px;
                 }
@@ -159,7 +159,7 @@ export default {
                     width: 40px;
                     height: 40px;
                     overflow: hidden;
-                    padding-right: 4px;
+                    padding-right: 16px;
                     border-radius: 10px;
                     img {
                         width: 100%;
