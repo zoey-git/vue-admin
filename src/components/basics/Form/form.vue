@@ -9,6 +9,15 @@
                         :value="option.value"
                         :key="index"></el-option>
                 </el-select>
+                <el-date-picker
+                    v-if="field.type === 'daterange'"
+                    v-model="value[field.key]"
+                    type="daterange"
+                    value-format="timestamp"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+                </el-date-picker>
                 <el-input v-else :placeholder="field.placeholder || '请输入'" :maxlength="field.maxlength" v-model="value[field.key]"></el-input>
             </el-form-item>
             <slot name="field" :params="value"></slot>

@@ -27,7 +27,8 @@ export default {
             dialogVisible: false,
             fields: [
                 { label: '姓名', key: 'name' },
-                { label: '地址', key: 'address' }
+                { label: '地址', key: 'address' },
+                { label: '日期', key: 'date', type: 'daterange' }
             ],
             rules: {
                 name: [
@@ -47,7 +48,8 @@ export default {
             },
             searchFields: [
                 { label: '姓名', key: 'name' },
-                { label: '地址', key: 'address' }
+                { label: '地址', key: 'address' },
+                { label: '日期', key: 'date', type: 'daterange' }
             ],
             searchValue: {}
         }
