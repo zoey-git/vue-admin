@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { getUserList, addUser } from '@/api/userAdmin'
+import { getUserList, addUser, userChange } from '@/api/userAdmin'
 import { getRoleList } from '@/api/role'
 import { MD5 } from '@/util/index'
 export default {
@@ -98,12 +98,21 @@ export default {
             })
         },
         handleSubmit(form) {
-            let password = MD5(form.password)
             let params = {
                 userName: form.userName,
-                password: password,
+                password: form.password,
                 roleId: form.roleId
             }
+            if (form._id) {
+                userChange(Object.assign(params, { _id: form._id })).then(res => {
+                    if (res.code === 200) {
+                        this.$message.success('修改成功')
+                        this.$refs.dialog.close()
+                    }
+                })
+                return
+            }
+            params.password = MD5(form.password)
             addUser(params).then(res => {
                 if (res.code === 200) {
                     this.$refs.dialog.close()

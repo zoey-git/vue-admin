@@ -8,3 +8,7 @@ export const getUserList = (params) => {
 export const addUser = (params) => {
     return post('/user/register', params)
 }
+
+export const userChange = (params) => {
+    return post('/user/userChange', params)
+}
