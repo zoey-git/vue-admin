@@ -1,6 +1,6 @@
 <template>
     <div class="login" :style="`background-image:url(${photo})`">
-        <inputForm @confirm="confirm" :title="title" :captcha="captcha">
+        <inputForm @confirm="confirm" :title="title" :captcha="captcha" :loading="loginLoading">
             <template slot="handle">
                 <div v-if="type === 'login'">
                     <el-button type="text" @click="goRegister">注册</el-button>
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-const { getPhoto, login, register, captcha } = require('@/api/user')
+const { getPhoto, login, register } = require('@/api/user')
 import { MD5 } from '@/util/index'
 import inputForm from './components/inputForm'
 import { SET_MENU_LIST } from '@/store/types'
@@ -22,7 +22,8 @@ export default {
         return {
             photo: '',
             type: 'login',
-            captcha: ''
+            captcha: '',
+            loginLoading: false
         }
     },
     computed: {
@@ -32,6 +33,7 @@ export default {
     },
     methods: {
         confirm(data) {
+            this.loginLoading = true
             let password = MD5(data.password)
             let params = {
                 userName: data.userName,
@@ -50,9 +52,11 @@ export default {
                     this.setMenu().then(res=>{
                         if(res.code) {
                             this.$router.push({ path: '/' })
+                            this.loginLoading = false
                         }
                     })
                 } else {
+                    this.loginLoading = false
                     this.$message({
                         type: 'error',
                         message: res.msg
@@ -90,10 +94,6 @@ export default {
         }
         getPhoto(params).then(res => {
             this.photo = res[0]
-        })
-        captcha().then(res => {
-            console.log(res);
-            this.captcha = res.data.url
         })
     },
     components: {

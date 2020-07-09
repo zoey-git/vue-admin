@@ -1,6 +1,6 @@
 <template>
     <div class="serach_wrap">
-        <Form ref="form" v-model="value" :fields="fields" :inline="true">
+        <Form ref="form" :fields="fields" :inline="true">
             <template v-slot:field="{params}">
                 <slot name="field" :params="params"></slot>
                 <el-form-item class="el-form-body-partitioncontain">
@@ -54,8 +54,7 @@ export default {
         buttons: {
             type: Array,
             default: () => (["add"])
-        },
-        value: Object
+        }
     },
     data() {
         return {
@@ -76,7 +75,8 @@ export default {
     },
     methods: {
         search() {
-            this.$emit('search', this.value)
+            let params = this.$refs.form.getValues()
+            this.$emit('search', params)
         },
         reset() {
             let params = this.$refs.form.reset()

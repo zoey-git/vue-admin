@@ -10,35 +10,45 @@
             </el-form-item>
             <el-form-item label="验证码" class="captcha">
                 <el-input v-model="form.captcha"></el-input>
-                <div style="display: inline-block;height: 40px;vertical-align: bottom;" v-html="captcha"></div>
+                <div @click="handleGetCaptcha" style="display: inline-block;height: 40px;vertical-align: bottom;" v-html="captcha"></div>
             </el-form-item>
             <div class="slot">
                 <slot name="handle"></slot>
             </div>
             <el-form-item>
-                <el-button class="login_btn" type="primary" @click="onSubmit">{{title}}</el-button>
+                <el-button class="login_btn" type="primary" :loading="loading" @click="onSubmit">{{title}}</el-button>
             </el-form-item>
         </el-form>
     </el-card>
 </template>
 
 <script>
+const { captcha } = require('@/api/user')
 export default {
     props: {
         title: {
             type: String,
             required: true
         },
-        captcha: String
+        loading: Boolean
     },
     data() {
         return {
-            form: {}
+            form: {},
+            captcha: ''
         }
+    },
+    mounted() {
+        this.handleGetCaptcha()
     },
     methods: {
         onSubmit() {
             this.$emit('confirm', this.form)
+        },
+        handleGetCaptcha() {
+            captcha().then(res => {
+                this.captcha = res.data.url
+            })   
         }
     }
 }

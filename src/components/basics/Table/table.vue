@@ -5,9 +5,13 @@
             style="width: 100%">
             <el-table-column
                 v-for="(item, index) in Object.entries(column)" :key="index"
-                :prop="item[0]"
                 :label="typeof item[1] === 'string' ? item[1] : item[1]['label']"
                 :width="Object.prototype.toString.call(item[1]) === '[object Object]' && item[1]['width']">
+                <template slot-scope="scope">
+                    <span v-if="['time', 'datetime', 'date'].includes(item[1]['type'])">{{scope.row[item[0]] | formatDate(item[1]['type'])}}</span>
+                    <span v-else-if="typeof item[1]['format'] === 'function'">{{item[1]['format'](scope.row)}}</span>
+                    <span v-else>{{scope.row[item[0]]}}</span>
+                </template>
             </el-table-column>
             <el-table-column
                 fixed="right"
@@ -58,6 +62,35 @@ export default {
     data() {
         return {
            
+        }
+    },
+    filters: {
+        /**
+         * type: date | datetime | time
+         */
+        formatDate(timer, type = 'datetime') {
+            if (!timer) {
+                return ''
+            }
+            let date = new Date(timer);
+            let y = date.getFullYear();// 年
+            let MM = date.getMonth() + 1;// 月
+            MM = MM < 10 ? ('0' + MM) : MM;
+            let d = date.getDate();// 日
+            d = d < 10 ? ('0' + d) : d;
+            if (type === 'date') {
+                return [y, MM, d].join('-')
+            }
+            let h = date.getHours();// 时
+            h = h < 10 ? ('0' + h) : h;
+            let m = date.getMinutes();// 分
+            m = m < 10 ? ('0' + m) : m;
+            let s = date.getSeconds();// 秒
+            s = s < 10 ? ('0' + s) : s;
+            if (type === 'time') {
+                return [h, m, s].join(':')
+            }
+            return [y, MM, d].join('-') + ' ' +[h, m, s].join(':')
         }
     },
     methods: {

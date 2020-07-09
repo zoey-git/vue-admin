@@ -10,3 +10,6 @@ export const addDemo = (params) => {
 export const updateDemo = (params) => {
     return post('/demo/update', params)
 }
+export const deleteDemo = (params) => {
+    return post('/demo/del', params)
+}
